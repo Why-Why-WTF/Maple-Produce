@@ -60,4 +60,96 @@
             <div class="btn-group">
                 <button class="btn-nav" id="btn-eq" onclick="showRoute('equipment')">장비제작 명장루트</button>
                 <button class="btn-nav" id="btn-ac" onclick="showRoute('accessory')">장신구제작 명장루트</button>
-                <button class
+                <button class="btn-nav" id="btn-al" onclick="showRoute('alchemy')">연금술 명장루트</button>
+            </div>
+        </div>
+        <div class="category-group">
+            <span class="label">Professional Skills - 전문기술 정보</span>
+            <div class="btn-group">
+                <button class="btn-nav">채집</button><button class="btn-nav">광물</button>
+                <button class="btn-nav">장비제작</button><button class="btn-nav">장신구제작</button>
+                <button class="btn-nav">연금술</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="display-area">
+        <p style="color:#bbb; padding:50px;">카테고리를 선택하여 제작 루트를 확인하세요.</p>
+    </div>
+</div>
+
+<script>
+    // 이미지 데이터를 토대로 정밀 수정된 데이터베이스
+    const routes = {
+        equipment: [
+            { lv: "1~3레벨", item: "40제 활 화살", count: 12, mats: [{n:"은괴", r:1}, {n:"오팔", r:1}] },
+            { lv: "3~7레벨", item: "70제 활 화살", count: 37, mats: [{n:"청동", r:1}, {n:"아다만티움", r:1}] },
+            { lv: "7~10레벨", item: "100제 활 화살", count: 77, mats: [{n:"아쿠아마린", r:1}, {n:"다이아몬드", r:1}] },
+            { lv: "10레벨~장인 (루트1)", item: "타임리스 카바타나", count: 33, mats: [{n:"흑수정", r:2}, {n:"고급 연마제", r:1}, {n:"시간의 돌", r:1}, {n:"상급 아이템 결정", r:2}] },
+            { lv: "10레벨~장인 (루트2)", item: "타임리스 론타노", count: 33, mats: [{n:"어둠의 크리스탈", r:2}, {n:"고급 연마제", r:1}, {n:"시간의 돌", r:1}, {n:"상급 아이템 결정", r:2}] },
+            { lv: "장인~명장", item: "마법의 숫돌", count: 31, mats: [{n:"최상급 아이템 결정", r:10}, {n:"뒤틀린 시간의 정수", r:10}, {n:"상급 주문의 정수", r:10}] }
+        ],
+        accessory: [
+            { lv: "1~6레벨", item: "50제 반지", count: 34, mats: [{n:"오리할콘", r:1}, {n:"하급 연마제", r:1}] },
+            { lv: "6~10레벨 (루트1)", item: "날쌘돌이의 링 III", count: 95, mats: [{n:"금괴", r:1}, {n:"중급 연마제", r:1}] },
+            { lv: "6~10레벨 (루트2)", item: "백발백중의 링 IV", count: 95, mats: [{n:"토파즈", r:1}, {n:"중급 연마제", r:1}] },
+            { lv: "10레벨~장인", item: "지혜의 로얄 숄더", count: 21, mats: [{n:"물개 가죽", r:10}, {n:"고급 연마제", r:1}, {n:"시간의 돌", r:6}, {n:"상급 아이템 결정", r:8}, {n:"흑수정", r:4}] },
+            { lv: "장인~명장", item: "강력한 환생의 불꽃", count: 31, mats: [{n:"마력 결정", r:30}, {n:"환생의 조각", r:5}, {n:"중급 주문의 정수", r:30}, {n:"꺼지지 않는 불꽃", r:5}] }
+        ],
+        alchemy: [
+            { lv: "1~2레벨", item: "체력 회복 포션 1000", count: 3, mats: [{n:"하급 포션 빈 병", r:50}, {n:"마조람 씨앗 오일", r:3}] },
+            { lv: "2~3레벨", item: "2단계 힘의 물약", count: 5, mats: [{n:"하급 포션 빈 병", r:5}, {n:"라벤더 씨앗 오일", r:2}] },
+            { lv: "3~4레벨", item: "마나 회복 포션 2000", count: 9, mats: [{n:"하급 포션 빈 병", r:50}, {n:"로즈마리 꽃 오일", r:3}] },
+            { lv: "4~5레벨", item: "마나 회복 포션 2500", count: 14, mats: [{n:"중급 포션 빈 병", r:50}, {n:"만다린 꽃 오일", r:3}] },
+            { lv: "5~6레벨", item: "5단계 방어의 물약", count: 19, mats: [{n:"중급 포션 빈 병", r:25}, {n:"레몬밤 씨앗 오일", r:3}] },
+            { lv: "6~8레벨", item: "6단계 방어의 물약", count: 59, mats: [{n:"중급 포션 빈 병", r:25}, {n:"자스민 씨앗 오일", r:3}] },
+            { lv: "8~9레벨", item: "마나 회복 포션 4000", count: 43, mats: [{n:"고급 포션 빈 병", r:50}, {n:"티트리 꽃 오일", r:3}, {n:"고급 포션 응고제", r:10}] },
+            { lv: "9~10레벨", item: "마나 회복 포션 6000", count: 49, mats: [{n:"고급 포션 빈 병", r:50}, {n:"페츌리 꽃 오일", r:3}, {n:"고급 포션 응고제", r:10}] },
+            { lv: "10레벨~장인", item: "마나 회복 포션 7000", count: 66, mats: [{n:"최고급 포션 빈 병", r:50}, {n:"쥬니퍼베리 꽃 오일", r:3}, {n:"최고급 포션 응고제", r:10}] },
+            { lv: "장인~명장", item: "비약 제작 (경축비/재획비)", count: 31, mats: [{n:"쥬니퍼베리 씨앗 오일", r:10}, {n:"상급 아이템 결정", r:10}, {n:"최상급 포션 빈 병", r:5}] }
+        ]
+    };
+
+    function showRoute(type) {
+        // 버튼 활성화 스타일
+        document.querySelectorAll('.btn-nav').forEach(b => b.classList.remove('active'));
+        if(type === 'equipment') document.getElementById('btn-eq').classList.add('active');
+        if(type === 'accessory') document.getElementById('btn-ac').classList.add('active');
+        if(type === 'alchemy') document.getElementById('btn-al').classList.add('active');
+
+        const data = routes[type];
+        const world = document.getElementById('world-select').value;
+
+        let html = `<div class="table-wrapper"><table><thead><tr>
+            <th>레벨 구간</th><th>제작 아이템</th><th>구간제작 횟수</th>
+            <th>재료 이름</th><th>재료 필요개수</th><th>재료 개당금액</th><th>제작 총 비용</th>
+        </tr></thead><tbody>`;
+
+        data.forEach(route => {
+            const rowSpan = route.mats.length;
+            route.mats.forEach((mat, i) => {
+                html += `<tr>`;
+                if (i === 0) {
+                    html += `<td rowspan="${rowSpan}" class="row-span-bg">${route.lv}</td>`;
+                    html += `<td rowspan="${rowSpan}" class="row-span-bg">${route.item}</td>`;
+                    html += `<td rowspan="${rowSpan}" class="row-span-bg">${route.count}회</td>`;
+                }
+                html += `<td>${mat.n}</td>`;
+                html += `<td>${(mat.r * route.count).toLocaleString()}개</td>`;
+                html += `<td class="highlight-price">조회전</td>`;
+                if (i === 0) {
+                    html += `<td rowspan="${rowSpan}" class="total-price">-</td>`;
+                }
+                html += `</tr>`;
+            });
+        });
+
+        html += `</tbody></table></div>`;
+        html += `<div class="info-text">* ${world} 월드 경매장 최저가 매물부터 순차 합산하여 계산됩니다.</div>`;
+        
+        document.getElementById('display-area').innerHTML = html;
+    }
+</script>
+
+</body>
+</html>

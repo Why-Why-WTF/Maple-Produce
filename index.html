@@ -1,14 +1,94 @@
-const routes = {
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메이플 아이템메이커</title>
+    <style>
+        body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background: #fff; color: #333; margin: 0; line-height: 1.5; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; text-align: center; }
+        h1 { color: #f39c12; font-size: 2.2rem; margin-bottom: 30px; letter-spacing: -1px; }
+        
+        /* 상단 컨트롤 영역 */
+        .search-area { display: flex; justify-content: center; gap: 10px; margin-bottom: 40px; }
+        select, input { padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; outline: none; }
+        input { width: 400px; }
+        .btn-search { background: #f39c12; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+
+        /* 카테고리 영역 */
+        .category-group { margin-bottom: 25px; }
+        .label { display: block; font-size: 13px; color: #999; margin-bottom: 10px; font-weight: bold; }
+        .btn-group { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+        .btn-nav { background: #fff; border: 1px solid #eee; padding: 10px 20px; border-radius: 25px; cursor: pointer; font-size: 14px; color: #666; transition: 0.2s; }
+        .btn-nav:hover { border-color: #f39c12; color: #f39c12; }
+        .btn-nav.active { background: #f39c12; color: #fff; border-color: #f39c12; font-weight: bold; }
+
+        /* 테이블 스타일 */
+        .table-wrapper { margin-top: 30px; border-radius: 10px; overflow: hidden; border: 1px solid #eee; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        table { width: 100%; border-collapse: collapse; background: #fff; table-layout: fixed; }
+        th { background: #f9f9f9; border-bottom: 2px solid #f39c12; padding: 15px; font-size: 14px; }
+        td { border-bottom: 1px solid #f2f2f2; padding: 12px; font-size: 13px; text-align: center; word-break: keep-all; }
+        .row-span { background: #fff; font-weight: bold; border-right: 1px solid #f5f5f5; }
+        .price-col { color: #e67e22; font-weight: bold; }
+        .total-col { color: #d35400; font-weight: 800; font-size: 1.05em; }
+        
+        /* 연금술 전용 안내 문구 */
+        .alchemy-note { margin-top: 20px; padding: 20px; background: #fff9f0; border-left: 5px solid #f39c12; border-radius: 8px; font-size: 14px; color: #555; text-align: left; line-height: 1.7; }
+        .alchemy-note strong { color: #d35400; display: block; margin-bottom: 5px; font-size: 16px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header><h1>🍁 메이플 아이템메이커</h1></header>
+
+    <div class="search-area">
+        <select id="world-select">
+            <option>스카니아</option><option>루나</option><option>엘리시움</option>
+            <option>크로아</option><option>오로라</option><option>베라</option>
+            <option>레드</option><option>이노시스</option><option>유니온</option>
+            <option>아케인</option><option>노바</option>
+        </select>
+        <input type="text" id="item-input" placeholder="아이템명은 풀 네임으로 작성바랍니다.">
+        <button class="btn-search">경매장 검색</button>
+    </div>
+
+    <div class="category-section">
+        <div class="category-group">
+            <span class="label">Master Route - 명장 달성 가이드</span>
+            <div class="btn-group">
+                <button class="btn-nav" id="btn-eq" onclick="showRoute('equipment')">장비제작 명장루트</button>
+                <button class="btn-nav" id="btn-ac" onclick="showRoute('accessory')">장신구제작 명장루트</button>
+                <button class="btn-nav" id="btn-al" onclick="showRoute('alchemy')">연금술 명장루트</button>
+            </div>
+        </div>
+        <div class="category-group">
+            <span class="label">Professional Skills - 전문기술 정보</span>
+            <div class="btn-group">
+                <button class="btn-nav">채집</button><button class="btn-nav">광물</button>
+                <button class="btn-nav">장비제작</button><button class="btn-nav">장신구제작</button>
+                <button class="btn-nav">연금술</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="display-area">
+        <p style="color:#999; padding:60px;">명장 루트를 선택하여 상세 재료를 확인하세요.</p>
+    </div>
+</div>
+
+<script>
+    const routes = {
         equipment: [
-            { lv: "1레벨 ~ 3레벨", item: "발사체 카테고리 화살 (40제 활/석궁 전용 좋은 화살)", count: 12, mats: [{n:"은괴", r:12}, {n:"오팔", r:12}] },
-            { lv: "3레벨 ~ 7레벨", item: "발사체 카테고리 화살 (70제 활/석궁 전용 강한 화살)", count: 37, mats: [{n:"청동", r:37}, {n:"아다만티움", r:37}] },
-            { lv: "7레벨 ~ 10레벨", item: "발사체 카테고리 화살 (1000제 활/석궁 전용 날카로운 화살)", count: 77, mats: [{n:"아쿠아마린", r:77}, {n:"다이아몬드", r:77}] },
+            { lv: "1레벨 ~ 3레벨", item: "40제 활/석궁 화살", count: 12, mats: [{n:"은괴", r:12}, {n:"오팔", r:12}] },
+            { lv: "3레벨 ~ 7레벨", item: "70제 활/석궁 화살", count: 37, mats: [{n:"청동", r:37}, {n:"아다만티움", r:37}] },
+            { lv: "7레벨 ~ 10레벨", item: "100제 활/석궁 화살", count: 77, mats: [{n:"아쿠아마린", r:77}, {n:"다이아몬드", r:77}] },
             { lv: "10레벨 ~ 장인", item: "120제 타임리스 카바타나", count: 33, mats: [{n:"흑수정", r:2}, {n:"고급 연마제", r:1}, {n:"시간의 돌", r:1}, {n:"상급 아이템 결정", r:2}] },
             { lv: "10레벨 ~ 장인", item: "120제 타임리스 론타노", count: 33, mats: [{n:"어둠의 크리스탈", r:2}, {n:"고급 연마제", r:1}, {n:"시간의 돌", r:1}, {n:"상급 아이템 결정", r:2}] },
             { lv: "장인 ~ 명장", item: "마법의 숫돌", count: 31, mats: [{n:"최상급 아이템 결정", r:10}, {n:"뒤틀린 시간의 정수", r:10}, {n:"상급 주문의 정수", r:10}] }
         ],
         accessory: [
-            { lv: "1레벨 ~ 6레벨", item: "50제 반지 (날렵함의 링 II or 디펜스링 II)", count: 34, mats: [{n:"오리할콘", r:1}, {n:"하급 연마제", r:1}] },
+            { lv: "1레벨 ~ 6레벨", item: "50제 반지", count: 34, mats: [{n:"오리할콘", r:1}, {n:"하급 연마제", r:1}] },
             { lv: "6레벨 ~ 10레벨", item: "90제 날쌘돌이의 링 III", count: 95, mats: [{n:"금괴", r:1}, {n:"중급 연마제", r:1}] },
             { lv: "6레벨 ~ 10레벨", item: "90제 백발백중의 링 IV", count: 95, mats: [{n:"토파즈", r:1}, {n:"중급 연마제", r:1}] },
             { lv: "10레벨 ~ 장인", item: "120제 지혜의 로얄 숄더", count: 21, mats: [{n:"물개 가죽", r:10}, {n:"고급 연마제", r:1}, {n:"흑수정", r:4}, {n:"시간의 돌", r:6}, {n:"상급 아이템 결정", r:8}] },
@@ -27,6 +107,53 @@ const routes = {
             { lv: "9레벨 ~ 10레벨 (총 제작 49회)", item: "마나 회복 알약 6000", count: 24, mats: [{n:"고급 포션 응고제", r:10}, {n:"마나 회복 포션 6000", r:50}] },
             { lv: "10레벨 ~ 장인 (총 제작 66회)", item: "마나 회복 포션 7000", count: 33, mats: [{n:"최고급 포션 빈 병", r:50}, {n:"쥬니퍼베리 꽃 오일", r:3}] },
             { lv: "10레벨 ~ 장인 (총 제작 66회)", item: "마나 회복 알약 7000", count: 33, mats: [{n:"최고급 포션 응고제", r:10}, {n:"마나 회복 포션 7000", r:50}] },
-            { lv: "장인 ~ 명장", item: "보스킬러/관통/경축비/재획비 등", count: 0, mats: [{n:"하단 안내 문구 참조", r:0}] }
+            { lv: "장인 ~ 명장", item: "비약 제작 (경축비/재획비 등)", count: 0, mats: [{n:"하단 안내 문구 참조", r:0}] }
         ]
     };
+
+    function showRoute(type) {
+        // 버튼 활성 상태 표시
+        document.querySelectorAll('.btn-nav').forEach(b => b.classList.remove('active'));
+        const btnIdMap = {'equipment': 'btn-eq', 'accessory': 'btn-ac', 'alchemy': 'btn-al'};
+        document.getElementById(btnIdMap[type]).classList.add('active');
+
+        let html = `<div class="table-wrapper"><table><thead><tr>
+            <th width="15%">레벨 구간</th><th width="18%">제작 아이템</th><th width="12%">구간 제작 총 횟수</th>
+            <th width="15%">재료 이름</th><th width="10%">재료 필요 개수</th><th width="15%">재료 개당 금액</th><th width="15%">제작 총 비용</th>
+        </tr></thead><tbody>`;
+
+        routes[type].forEach(route => {
+            const rowSpan = route.mats.length;
+            route.mats.forEach((mat, i) => {
+                html += `<tr>`;
+                if (i === 0) {
+                    html += `<td rowspan="${rowSpan}" class="row-span">${route.lv}</td>`;
+                    html += `<td rowspan="${rowSpan}" class="row-span">${route.item}</td>`;
+                    html += `<td rowspan="${rowSpan}" class="row-span">${route.count > 0 ? route.count + '회' : '-'}</td>`;
+                }
+                html += `<td>${mat.n}</td>`;
+                html += `<td>${mat.r > 0 ? (mat.r * (route.count || 1)).toLocaleString() + '개' : '-'}</td>`;
+                html += `<td class="price-col">조회전</td>`;
+                if (i === 0) {
+                    html += `<td rowspan="${rowSpan}" class="total-col">-</td>`;
+                }
+                html += `</tr>`;
+            });
+        });
+
+                html += `</tbody></table></div>`;
+
+        if (type === 'alchemy') {
+            html += `<div class="alchemy-note">
+                <strong>[장인 ~ 명장 구간 안내]</strong>
+                보스킬러의 비약, 관통의 비약, 경축비, 소재비, 재획비 등 정답이 없는 구간이며 숙련도 쌓기가 힘든 구간입니다.<br>
+                경매장에 판매했을 때 제일 이득을 볼 수 있는 비약 및 본인이 직접 사용할 비약을 제작하면서 숙련도를 쌓는 방법 말고는 없습니다.
+            </div>`;
+        }
+
+        document.getElementById('display-area').innerHTML = html;
+    }
+</script>
+
+</body>
+</html>

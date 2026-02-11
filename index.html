@@ -94,4 +94,75 @@
 
         .btn-nav:hover {
             border-color: #f39c12;
-            color: #f39c
+            color: #f39c12;
+            background-color: #fff9f0;
+        }
+
+        /* 결과 창 */
+        #display-area {
+            margin-top: 40px;
+            padding: 30px;
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>🍁 메이플 아이템메이커</h1>
+    </header>
+
+    <div class="search-box">
+        <select id="server-select">
+            <option>스카니아</option><option>루나</option><option>엘리시움</option>
+            <option>크로아</option><option>오로라</option><option>베라</option>
+            <option>레드</option><option>이노시스</option><option>유니온</option>
+            <option>아케인</option><option>노바</option><option>리부트</option>
+        </select>
+        <input type="text" id="item-input" placeholder="아이템명은 풀 네임으로 작성바랍니다.">
+        <button class="btn-search" onclick="doSearch()">검색</button>
+    </div>
+
+    <div class="category-section">
+        <div class="category-group">
+            <span class="category-label">명장루트 설정</span>
+            <div class="btn-group">
+                <button class="btn-nav">장비제작 명장루트</button>
+                <button class="btn-nav">장신구제작 명장루트</button>
+                <button class="btn-nav">연금술 명장루트</button>
+            </div>
+        </div>
+
+        <div class="category-group">
+            <span class="category-label">전문기술 카테고리</span>
+            <div class="btn-group">
+                <button class="btn-nav">채집</button>
+                <button class="btn-nav">광물</button>
+                <button class="btn-nav">장비제작</button>
+                <button class="btn-nav">장신구제작</button>
+                <button class="btn-nav">연금술</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="display-area">
+        아이템을 검색하거나 카테고리를 선택하세요.
+    </div>
+</div>
+
+<script>
+    function doSearch() {
+        const server = document.getElementById('server-select').value;
+        const item = document.getElementById('item-input').value;
+        if(!item) return alert("아이템명을 입력해주세요.");
+        
+        document.getElementById('display-area').innerHTML = 
+            `<strong>${server}</strong> 서버에서 <strong>${item}</strong>의 최저가를 검색합니다...`;
+    }
+</script>
+
+</body>
+</html>

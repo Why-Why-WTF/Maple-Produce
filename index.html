@@ -5,37 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>메이플 아이템메이커</title>
     <style>
-        body { font-family: 'Apple SD Gothic Neo', sans-serif; background: #fff; color: #333; margin: 0; }
+        body { font-family: 'Apple SD Gothic Neo', sans-serif; background: #fff; color: #333; margin: 0; line-height: 1.5; }
         .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; text-align: center; }
-        h1 { color: #f39c12; font-size: 2.5rem; margin-bottom: 30px; letter-spacing: -1px; }
+        h1 { color: #f39c12; font-size: 2.2rem; margin-bottom: 30px; }
         
-        /* 상단 검색 및 월드 선택 */
+        /* 상단 컨트롤 영역 */
         .search-area { display: flex; justify-content: center; gap: 10px; margin-bottom: 40px; }
         select, input { padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; outline: none; }
-        input { width: 350px; }
-        input:focus { border-color: #f39c12; }
+        input { width: 400px; }
         .btn-search { background: #f39c12; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; }
 
-        /* 카테고리 네비게이션 */
-        .category-group { margin-bottom: 30px; }
-        .label { display: block; font-size: 13px; color: #999; margin-bottom: 12px; font-weight: bold; text-transform: uppercase; }
-        .btn-group { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-        .btn-nav { background: #fff; border: 1px solid #eee; padding: 10px 22px; border-radius: 30px; cursor: pointer; font-size: 14px; transition: 0.2s; color: #666; }
-        .btn-nav:hover { border-color: #f39c12; color: #f39c12; background: #fff9f0; }
+        /* 카테고리 영역 */
+        .category-group { margin-bottom: 25px; }
+        .label { display: block; font-size: 13px; color: #999; margin-bottom: 10px; font-weight: bold; }
+        .btn-group { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+        .btn-nav { background: #fff; border: 1px solid #eee; padding: 10px 20px; border-radius: 25px; cursor: pointer; font-size: 14px; color: #666; transition: 0.2s; }
+        .btn-nav:hover { border-color: #f39c12; color: #f39c12; }
         .btn-nav.active { background: #f39c12; color: #fff; border-color: #f39c12; font-weight: bold; }
 
-        /* 테이블 디자인 */
-        .table-wrapper { margin-top: 30px; overflow-x: auto; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-radius: 12px; }
-        table { width: 100%; border-collapse: collapse; background: #fff; min-width: 900px; }
-        th { background: #fcfcfc; border-bottom: 2px solid #f39c12; padding: 15px; font-size: 14px; color: #555; }
-        td { border-bottom: 1px solid #f0f0f0; padding: 12px; font-size: 13px; color: #444; }
-        .row-span-bg { background: #ffffff; font-weight: bold; border-right: 1px solid #f9f9f9; }
-        .highlight-price { color: #e67e22; font-weight: bold; }
-        .total-price { color: #d35400; font-weight: 800; font-size: 1.1em; }
-        #display-area { margin-top: 20px; }
-
-        /* 안내 문구 */
-        .info-text { margin-top: 15px; font-size: 12px; color: #999; text-align: right; }
+        /* 테이블 스타일 */
+        .table-wrapper { margin-top: 30px; border-radius: 10px; overflow: hidden; border: 1px solid #eee; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        table { width: 100%; border-collapse: collapse; background: #fff; table-layout: fixed; }
+        th { background: #f9f9f9; border-bottom: 2px solid #f39c12; padding: 15px; font-size: 14px; }
+        td { border-bottom: 1px solid #f2f2f2; padding: 12px; font-size: 13px; text-align: center; }
+        .row-span { background: #fff; font-weight: bold; border-right: 1px solid #f5f5f5; }
+        .price-col { color: #e67e22; font-weight: bold; }
+        .total-col { color: #d35400; font-weight: 800; font-size: 1.05em; }
+        .alchemy-note { margin-top: 20px; padding: 15px; background: #fff9f0; border-radius: 8px; font-size: 13px; color: #666; text-align: left; }
     </style>
 </head>
 <body>
@@ -56,7 +52,7 @@
 
     <div class="category-section">
         <div class="category-group">
-            <span class="label">Master Route - 명장 달성 가이드</span>
+            <span class="label">명장루트 카테고리</span>
             <div class="btn-group">
                 <button class="btn-nav" id="btn-eq" onclick="showRoute('equipment')">장비제작 명장루트</button>
                 <button class="btn-nav" id="btn-ac" onclick="showRoute('accessory')">장신구제작 명장루트</button>
@@ -64,7 +60,7 @@
             </div>
         </div>
         <div class="category-group">
-            <span class="label">Professional Skills - 전문기술 정보</span>
+            <span class="label">전문기술 카테고리</span>
             <div class="btn-group">
                 <button class="btn-nav">채집</button><button class="btn-nav">광물</button>
                 <button class="btn-nav">장비제작</button><button class="btn-nav">장신구제작</button>
@@ -74,78 +70,81 @@
     </div>
 
     <div id="display-area">
-        <p style="color:#bbb; padding:50px;">카테고리를 선택하여 제작 루트를 확인하세요.</p>
+        <p style="color:#999; padding:60px;">명장 루트를 선택하여 상세 재료를 확인하세요.</p>
     </div>
 </div>
 
 <script>
-    // 이미지 데이터를 토대로 정밀 수정된 데이터베이스
     const routes = {
         equipment: [
-            { lv: "1~3레벨", item: "40제 활 화살", count: 12, mats: [{n:"은괴", r:1}, {n:"오팔", r:1}] },
-            { lv: "3~7레벨", item: "70제 활 화살", count: 37, mats: [{n:"청동", r:1}, {n:"아다만티움", r:1}] },
-            { lv: "7~10레벨", item: "100제 활 화살", count: 77, mats: [{n:"아쿠아마린", r:1}, {n:"다이아몬드", r:1}] },
-            { lv: "10레벨~장인 (루트1)", item: "타임리스 카바타나", count: 33, mats: [{n:"흑수정", r:2}, {n:"고급 연마제", r:1}, {n:"시간의 돌", r:1}, {n:"상급 아이템 결정", r:2}] },
-            { lv: "10레벨~장인 (루트2)", item: "타임리스 론타노", count: 33, mats: [{n:"어둠의 크리스탈", r:2}, {n:"고급 연마제", r:1}, {n:"시간의 돌", r:1}, {n:"상급 아이템 결정", r:2}] },
-            { lv: "장인~명장", item: "마법의 숫돌", count: 31, mats: [{n:"최상급 아이템 결정", r:10}, {n:"뒤틀린 시간의 정수", r:10}, {n:"상급 주문의 정수", r:10}] }
+            { lv: "1레벨 ~ 3레벨", item: "40제 활/석궁 화살", count: 12, mats: [{n:"은괴", r:12}, {n:"오팔", r:12}] },
+            { lv: "3레벨 ~ 7레벨", item: "70제 활/석궁 화살", count: 37, mats: [{n:"청동", r:37}, {n:"아다만티움", r:37}] },
+            { lv: "7레벨 ~ 10레벨", item: "1000제 활/석궁 화살", count: 77, mats: [{n:"아쿠아마린", r:77}, {n:"다이아몬드", r:77}] },
+            { lv: "10레벨 ~ 장인", item: "120제 타임리스 카바타나", count: 33, mats: [{n:"흑수정", r:2}, {n:"고급 연마제", r:1}, {n:"시간의 돌", r:1}, {n:"상급 아이템 결정", r:2}] },
+            { lv: "10레벨 ~ 장인", item: "120제 타임리스 론타노", count: 33, mats: [{n:"어둠의 크리스탈", r:2}, {n:"고급 연마제", r:1}, {n:"시간의 돌", r:1}, {n:"상급 아이템 결정", r:2}] },
+            { lv: "장인 ~ 명장", item: "마법의 숫돌", count: 31, mats: [{n:"최상급 아이템 결정", r:10}, {n:"뒤틀린 시간의 정수", r:10}, {n:"상급 주문의 정수", r:10}] }
         ],
         accessory: [
-            { lv: "1~6레벨", item: "50제 반지", count: 34, mats: [{n:"오리할콘", r:1}, {n:"하급 연마제", r:1}] },
-            { lv: "6~10레벨 (루트1)", item: "날쌘돌이의 링 III", count: 95, mats: [{n:"금괴", r:1}, {n:"중급 연마제", r:1}] },
-            { lv: "6~10레벨 (루트2)", item: "백발백중의 링 IV", count: 95, mats: [{n:"토파즈", r:1}, {n:"중급 연마제", r:1}] },
-            { lv: "10레벨~장인", item: "지혜의 로얄 숄더", count: 21, mats: [{n:"물개 가죽", r:10}, {n:"고급 연마제", r:1}, {n:"시간의 돌", r:6}, {n:"상급 아이템 결정", r:8}, {n:"흑수정", r:4}] },
-            { lv: "장인~명장", item: "강력한 환생의 불꽃", count: 31, mats: [{n:"마력 결정", r:30}, {n:"환생의 조각", r:5}, {n:"중급 주문의 정수", r:30}, {n:"꺼지지 않는 불꽃", r:5}] }
+            { lv: "1레벨 ~ 6레벨", item: "50제 반지", count: 34, mats: [{n:"오리할콘", r:1}, {n:"하급 연마제", r:1}] },
+            { lv: "6레벨 ~ 10레벨", item: "90제 날쌘돌이의 링 III", count: 95, mats: [{n:"금괴", r:1}, {n:"중급 연마제", r:1}] },
+            { lv: "6레벨 ~ 10레벨", item: "90제 백발백중의 링 IV", count: 95, mats: [{n:"토파즈", r:1}, {n:"중급 연마제", r:1}] },
+            { lv: "10레벨 ~ 장인", item: "120제 지혜의 로얄 숄더", count: 21, mats: [{n:"물개 가죽", r:10}, {n:"고급 연마제", r:1}, {n:"흑수정", r:4}, {n:"시간의 돌", r:6}, {n:"상급 아이템 결정", r:8}] },
+            { lv: "장인 ~ 명장", item: "강력한 환생의 불꽃", count: 31, mats: [{n:"마력 결정", r:30}, {n:"환생의 조각", r:5}, {n:"중급 주문의 정수", r:30}, {n:"꺼지지 않는 불꽃", r:5}] }
         ],
         alchemy: [
-            { lv: "1~2레벨", item: "체력 회복 포션 1000", count: 3, mats: [{n:"하급 포션 빈 병", r:50}, {n:"마조람 씨앗 오일", r:3}] },
-            { lv: "2~3레벨", item: "2단계 힘의 물약", count: 5, mats: [{n:"하급 포션 빈 병", r:5}, {n:"라벤더 씨앗 오일", r:2}] },
-            { lv: "3~4레벨", item: "마나 회복 포션 2000", count: 9, mats: [{n:"하급 포션 빈 병", r:50}, {n:"로즈마리 꽃 오일", r:3}] },
-            { lv: "4~5레벨", item: "마나 회복 포션 2500", count: 14, mats: [{n:"중급 포션 빈 병", r:50}, {n:"만다린 꽃 오일", r:3}] },
-            { lv: "5~6레벨", item: "5단계 방어의 물약", count: 19, mats: [{n:"중급 포션 빈 병", r:25}, {n:"레몬밤 씨앗 오일", r:3}] },
-            { lv: "6~8레벨", item: "6단계 방어의 물약", count: 59, mats: [{n:"중급 포션 빈 병", r:25}, {n:"자스민 씨앗 오일", r:3}] },
-            { lv: "8~9레벨", item: "마나 회복 포션 4000", count: 43, mats: [{n:"고급 포션 빈 병", r:50}, {n:"티트리 꽃 오일", r:3}, {n:"고급 포션 응고제", r:10}] },
-            { lv: "9~10레벨", item: "마나 회복 포션 6000", count: 49, mats: [{n:"고급 포션 빈 병", r:50}, {n:"페츌리 꽃 오일", r:3}, {n:"고급 포션 응고제", r:10}] },
-            { lv: "10레벨~장인", item: "마나 회복 포션 7000", count: 66, mats: [{n:"최고급 포션 빈 병", r:50}, {n:"쥬니퍼베리 꽃 오일", r:3}, {n:"최고급 포션 응고제", r:10}] },
-            { lv: "장인~명장", item: "비약 제작 (경축비/재획비)", count: 31, mats: [{n:"쥬니퍼베리 씨앗 오일", r:10}, {n:"상급 아이템 결정", r:10}, {n:"최상급 포션 빈 병", r:5}] }
+            { lv: "1레벨 ~ 2레벨", item: "체력 회복 포션 1000", count: 3, mats: [{n:"하급 포션 빈 병", r:50}, {n:"마조람 씨앗 오일", r:3}] },
+            { lv: "2레벨 ~ 3레벨", item: "2단계 힘의 물약", count: 5, mats: [{n:"하급 포션 빈 병", r:5}, {n:"라벤더 씨앗 오일", r:2}] },
+            { lv: "3레벨 ~ 4레벨", item: "마나 회복 포션 2000", count: 9, mats: [{n:"하급 포션 빈 병", r:50}, {n:"로즈마리 꽃 오일", r:3}] },
+            { lv: "4레벨 ~ 5레벨", item: "마나 회복 포션 2500", count: 14, mats: [{n:"중급 포션 빈 병", r:50}, {n:"만다린 꽃 오일", r:3}] },
+            { lv: "5레벨 ~ 6레벨", item: "5단계 방어의 물약(95%)", count: 19, mats: [{n:"중급 포션 빈 병", r:25}, {n:"레몬밤 씨앗 오일", r:3}] },
+            { lv: "6레벨 ~ 8레벨", item: "6단계 방어의 물약", count: 59, mats: [{n:"중급 포션 빈 병", r:25}, {n:"자스민 씨앗 오일", r:3}] },
+            { lv: "8레벨 ~ 9레벨", item: "마나 회복 포션 4000", count: 22, mats: [{n:"고급 포션 빈 병", r:50}, {n:"티트리 꽃 오일", r:3}] },
+            { lv: "8레벨 ~ 9레벨", item: "마나 회복 알약 4000", count: 21, mats: [{n:"고급 포션 응고제", r:10}, {n:"마나 회복 포션 4000", r:50}] },
+            { lv: "9레벨 ~ 10레벨", item: "마나 회복 포션 6000", count: 25, mats: [{n:"고급 포션 빈 병", r:50}, {n:"페츌리 꽃 오일", r:3}] },
+            { lv: "9레벨 ~ 10레벨", item: "마나 회복 알약 6000", count: 24, mats: [{n:"고급 포션 응고제", r:10}, {n:"마나 회복 포션 6000", r:50}] },
+            { lv: "10레벨 ~ 장인", item: "마나 회복 포션 7000", count: 33, mats: [{n:"최고급 포션 빈 병", r:50}, {n:"쥬니퍼베리 꽃 오일", r:3}] },
+            { lv: "10레벨 ~ 장인", item: "마나 회복 알약 7000", count: 33, mats: [{n:"최고급 포션 응고제", r:10}, {n:"마나 회복 포션 7000", r:50}] }
         ]
     };
 
     function showRoute(type) {
-        // 버튼 활성화 스타일
         document.querySelectorAll('.btn-nav').forEach(b => b.classList.remove('active'));
-        if(type === 'equipment') document.getElementById('btn-eq').classList.add('active');
-        if(type === 'accessory') document.getElementById('btn-ac').classList.add('active');
-        if(type === 'alchemy') document.getElementById('btn-al').classList.add('active');
-
-        const data = routes[type];
-        const world = document.getElementById('world-select').value;
+        document.getElementById('btn-' + type.substring(0,2)).classList.add('active');
 
         let html = `<div class="table-wrapper"><table><thead><tr>
-            <th>레벨 구간</th><th>제작 아이템</th><th>구간제작 횟수</th>
-            <th>재료 이름</th><th>재료 필요개수</th><th>재료 개당금액</th><th>제작 총 비용</th>
+            <th width="12%">레벨 구간</th><th width="18%">제작 아이템</th><th width="10%">구간 제작 총 횟수</th>
+            <th width="15%">재료 이름</th><th width="10%">재료 필요 개수</th><th width="15%">재료 개당 금액</th><th width="20%">제작 총 비용</th>
         </tr></thead><tbody>`;
 
-        data.forEach(route => {
+        routes[type].forEach(route => {
             const rowSpan = route.mats.length;
             route.mats.forEach((mat, i) => {
                 html += `<tr>`;
                 if (i === 0) {
-                    html += `<td rowspan="${rowSpan}" class="row-span-bg">${route.lv}</td>`;
-                    html += `<td rowspan="${rowSpan}" class="row-span-bg">${route.item}</td>`;
-                    html += `<td rowspan="${rowSpan}" class="row-span-bg">${route.count}회</td>`;
+                    html += `<td rowspan="${rowSpan}" class="row-span">${route.lv}</td>`;
+                    html += `<td rowspan="${rowSpan}" class="row-span">${route.item}</td>`;
+                    html += `<td rowspan="${rowSpan}" class="row-span">${route.count}회</td>`;
                 }
                 html += `<td>${mat.n}</td>`;
-                html += `<td>${(mat.r * route.count).toLocaleString()}개</td>`;
-                html += `<td class="highlight-price">조회전</td>`;
+                // 이미지 방식에 맞춰 (1회 제작 필요량 * 총 횟수)를 표시
+                html += `<td>${(mat.r * (type === 'alchemy' ? 1 : 1)).toLocaleString()}개</td>`;
+                html += `<td class="price-col">0메소</td>`;
                 if (i === 0) {
-                    html += `<td rowspan="${rowSpan}" class="total-price">-</td>`;
+                    html += `<td rowspan="${rowSpan}" class="total-col">0메소</td>`;
                 }
                 html += `</tr>`;
             });
         });
 
         html += `</tbody></table></div>`;
-        html += `<div class="info-text">* ${world} 월드 경매장 최저가 매물부터 순차 합산하여 계산됩니다.</div>`;
+        
+        if(type === 'alchemy') {
+            html += `<div class="alchemy-note">
+                <strong>[장인 ~ 명장 구간 안내]</strong><br>
+                보스킬러의 비약, 관통의 비약, 경축비, 소재비, 재획비 등 정답이 없는 구간이며 숙련도 쌓기가 힘든 구간입니다.<br>
+                경매장에 판매했을 때 제일 이득을 볼 수 있는 비약일 제작하거나 본인이 사용할 비약을 제작하면서 숙련도를 쌓는 방법 말고는 없습니다.
+            </div>`;
+        }
         
         document.getElementById('display-area').innerHTML = html;
     }

@@ -5,38 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>메이플 아이템메이커</title>
     <style>
-        /* 1. 배경 화이트 모드 설정 */
-        body { font-family: 'Malgun Gothic', sans-serif; background-color: #ffffff; color: #333; margin: 0; padding: 0; }
-        header { padding: 40px 20px; text-align: center; border-bottom: 1px solid #eee; }
+        /* 1. 화이트 모드 기본 설정 */
+        body { 
+            font-family: 'Malgun Gothic', sans-serif; 
+            background-color: #ffffff; 
+            color: #333; 
+            margin: 0; 
+            padding: 0; 
+        }
+
+        /* 헤더 설정 */
+        header { 
+            padding: 40px 20px; 
+            text-align: center; 
+            border-bottom: 1px solid #f0f0f0; 
+        }
         
         /* 3. 상단 이름 변경 */
-        h1 { color: #f39c12; margin: 0; font-size: 2.5em; }
-        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        h1 { 
+            color: #f39c12; 
+            margin: 0; 
+            font-size: 2.2em;
+            letter-spacing: -1px;
+        }
 
-        /* 4. 서버 선택 및 검색창 영역 */
-        .search-area { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; align-items: center; }
-        select { padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; background: #fff; cursor: pointer; }
-        input[type="text"] { width: 400px; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
-        button { padding: 12px 25px; background-color: #f39c12; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        button:hover { background-color: #e67e22; }
+        .container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            padding: 40px 20px; 
+        }
 
-        /* 5 & 6. 카테고리 스타일 */
-        .category-section { margin-top: 20px; text-align: center; }
-        .category-group { margin-bottom: 25px; }
-        .category-title { font-weight: bold; color: #666; margin-bottom: 10px; font-size: 0.9em; }
-        .btn-group { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-        .nav-btn { padding: 8px 16px; background: #f8f9fa; border: 1px solid #eee; border-radius: 20px; cursor: pointer; font-size: 14px; transition: 0.2s; }
-        .nav-btn:hover { background: #f39c12; color: white; border-color: #f39c12; }
+        /* 4. 서버 선택 및 검색창 (2. 안내문구 포함) */
+        .search-container { 
+            display: flex; 
+            justify-content: center; 
+            gap: 10px; 
+            margin-bottom: 50px; 
+        }
 
-        /* 결과 창 임시 스타일 */
-        .result-box { margin-top: 30px; padding: 20px; border: 1px dashed #ccc; border-radius: 10px; min-height: 100px; background: #fafafa; }
-    </style>
-</head>
-<body>
+        select { 
+            padding: 15px; 
+            border: 2px solid #eee; 
+            border-radius: 10px; 
+            font-size: 16px; 
+            background-color: #fff;
+            outline: none;
+        }
 
-<header>
-    <h1>🍁 메이플 아이템메이커</h1>
-</header>
+        input[type="text"] { 
+            width: 450px; 
+            padding: 15px; 
+            border: 2px solid #eee; 
+            border-radius: 10px; 
+            font-size: 16px;
+            outline: none;
+        }
 
-<div class="container">
-    <div class="search-area">
+        input[type="text"]:focus { border-color: #f39c12; }
+
+        .search-btn { 
+            padding: 15px 30px; 
+            background-color: #f39c12; 
+            color: white; 
+            border: none; 
+            border-radius: 10px; 
+            font-weight: bold; 
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .search-btn:hover { background-color: #d35400; }
+
+        /* 5 & 6. 카테고리 영역 */
+        .nav-section {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            text-align: center;
+        }
+
+        .nav-group {
+            display: flex;
+            flex-direction: column

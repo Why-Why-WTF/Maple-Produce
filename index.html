@@ -5,30 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>메이플 아이템메이커</title>
     <style>
-        body { font-family: 'Apple SD Gothic Neo', sans-serif; background: #fff; color: #333; margin: 0; text-align: center; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
+        body { font-family: 'Apple SD Gothic Neo', sans-serif; background: #fff; color: #333; margin: 0; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; text-align: center; }
         h1 { color: #f39c12; font-size: 2.5rem; margin-bottom: 30px; }
         
-        /* 검색창 영역 */
         .search-area { display: flex; justify-content: center; gap: 10px; margin-bottom: 40px; }
         select, input { padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; }
         input { width: 350px; }
         .btn-search { background: #f39c12; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; }
 
-        /* 카테고리 영역 */
         .category-group { margin-bottom: 30px; }
         .label { display: block; font-size: 14px; color: #888; margin-bottom: 10px; font-weight: bold; }
         .btn-group { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
-        .btn-nav { background: #fff; border: 1px solid #ddd; padding: 8px 18px; border-radius: 20px; cursor: pointer; font-size: 14px; transition: 0.2s; }
-        .btn-nav:hover, .btn-nav.active { border-color: #f39c12; color: #f39c12; background: #fff9f0; }
+        .btn-nav { background: #fff; border: 1px solid #ddd; padding: 10px 20px; border-radius: 25px; cursor: pointer; font-size: 14px; transition: 0.2s; }
+        .btn-nav:hover, .btn-nav.active { border-color: #f39c12; color: #f39c12; background: #fff9f0; font-weight: bold; }
 
-        /* 테이블 디자인 */
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; }
-        th { background: #f8f9fa; border-top: 2px solid #333; border-bottom: 1px solid #ddd; padding: 12px; }
-        td { border-bottom: 1px solid #eee; padding: 10px; vertical-align: middle; }
-        .row-span { background: #fff; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; table-layout: fixed; }
+        th { background: #f8f9fa; border-top: 2px solid #f39c12; border-bottom: 1px solid #ddd; padding: 12px; }
+        td { border-bottom: 1px solid #eee; padding: 10px; text-align: center; word-break: keep-all; }
+        .row-span { background: #fff; font-weight: bold; border-right: 1px solid #f9f9f9; }
         .price-text { color: #e67e22; font-weight: bold; }
-        #display-area { margin-top: 40px; min-height: 200px; }
+        .total-price { color: #c0392b; font-weight: bold; font-size: 1.1em; }
+        #display-area { margin-top: 40px; }
     </style>
 </head>
 <body>
@@ -38,11 +36,13 @@
 
     <div class="search-area">
         <select id="world-select">
-            <option value="스카니아">스카니아</option><option value="루나">루나</option>
-            <option value="엘리시움">엘리시움</option><option value="크로아">크로아</option>
+            <option>스카니아</option><option>루나</option><option>엘리시움</option>
+            <option>크로아</option><option>오로라</option><option>베라</option>
+            <option>레드</option><option>이노시스</option><option>유니온</option>
+            <option>아케인</option><option>노바</option><option>리부트</option>
         </select>
         <input type="text" id="item-input" placeholder="아이템명은 풀 네임으로 작성바랍니다.">
-        <button class="btn-search">검색</button>
+        <button class="btn-search" onclick="alert('준비 중인 기능입니다.')">검색</button>
     </div>
 
     <div class="category-section">
@@ -64,74 +64,73 @@
         </div>
     </div>
 
-    <div id="display-area">버튼을 클릭하여 명장 루트 정보를 확인하세요.</div>
+    <div id="display-area">버튼을 클릭하여 최신 명장 루트 정보를 확인하세요.</div>
 </div>
 
 <script>
-    // 명장 루트 데이터 객체 (전달받은 이미지 내용 기반)
     const routes = {
         equipment: [
-            { lv: "1레벨~3레벨", item: "40제 활/석궁 화살", count: 12, materials: [{ name: "은괴", req: 12 }, { name: "오팔", req: 12 }] },
-            { lv: "3레벨~7레벨", item: "70제 활/석궁 화살", count: 37, materials: [{ name: "청동", req: 37 }, { name: "아다만티움", req: 37 }] },
-            { lv: "7레벨~10레벨", item: "100제 활/석궁 화살", count: 77, materials: [{ name: "아쿠아마린", req: 77 }, { name: "다이아몬드", req: 77 }] },
-            { lv: "10레벨~장인", item: "120제 타임리스 카바타나", count: 33, materials: [{ name: "흑수정", req: 2 }, { name: "고급 연마제", req: 1 }, { name: "시간의 돌", req: 1 }, { name: "상급 아이템 결정", req: 2 }] },
-            { lv: "장인~명장", item: "마법의 숫돌", count: 31, materials: [{ name: "최상급 아이템 결정", req: 10 }, { name: "뒤틀린 시간의 정수", req: 10 }, { name: "상급 주문의 정수", req: 10 }] }
+            { lv: "1레벨~3레벨", item: "40제 활/석궁 화살", count: 12, mats: [{n:"은괴", r:12}, {n:"오팔", r:12}] },
+            { lv: "3레벨~7레벨", item: "70제 활/석궁 화살", count: 37, mats: [{n:"청동", r:37}, {n:"아다만티움", r:37}] },
+            { lv: "7레벨~10레벨", item: "100제 활/석궁 화살", count: 77, mats: [{n:"아쿠아마린", r:77}, {n:"다이아몬드", r:77}] },
+            { lv: "10레벨~장인 (루트1)", item: "120제 타임리스 카바타나", count: 33, mats: [{n:"흑수정", r:2}, {n:"고급 연마제", r:1}, {n:"시간의 돌", r:1}, {n:"상급 아이템 결정", r:2}] },
+            { lv: "10레벨~장인 (루트2)", item: "120제 타임리스 론타노", count: 33, mats: [{n:"어둠의 크리스탈", r:2}, {n:"고급 연마제", r:1}, {n:"시간의 돌", r:1}, {n:"상급 아이템 결정", r:2}] },
+            { lv: "장인~명장", item: "마법의 숫돌", count: 31, mats: [{n:"최상급 아이템 결정", r:10}, {n:"뒤틀린 시간의 정수", r:10}, {n:"상급 주문의 정수", r:10}] }
         ],
         accessory: [
-            { lv: "1레벨~6레벨", item: "50제 반지", count: 34, materials: [{ name: "오리할콘", req: 1 }, { name: "하급 연마제", req: 1 }] },
-            { lv: "6레벨~10레벨", item: "90제 반지", count: 95, materials: [{ name: "금괴", req: 1 }, { name: "중급 연마제", req: 1 }] },
-            { lv: "10레벨~장인", item: "120제 지혜의 로얄 숄더", count: 21, materials: [{ name: "물개 가죽", req: 10 }, { name: "고급 연마제", req: 1 }, { name: "시간의 돌", req: 6 }, { name: "상급 아이템 결정", req: 8 }] },
-            { lv: "장인~명장", item: "강력한 환생의 불꽃", count: 31, materials: [{ name: "마력 결정", req: 30 }, { name: "환생의 조각", req: 5 }, { name: "중급 주문의 정수", req: 30 }, { name: "꺼지지 않는 불꽃", req: 5 }] }
+            { lv: "1레벨~6레벨", item: "50제 반지", count: 34, mats: [{n:"오리할콘", r:1}, {n:"하급 연마제", r:1}] },
+            { lv: "6레벨~10레벨 (루트1)", item: "90제 날쌘돌이의 링 III", count: 95, mats: [{n:"금괴", r:1}, {n:"중급 연마제", r:1}] },
+            { lv: "6레벨~10레벨 (루트2)", item: "90제 백발백중의 링 IV", count: 95, mats: [{n:"토파즈", r:1}, {n:"중급 연마제", r:1}] },
+            { lv: "10레벨~장인", item: "120제 지혜의 로얄 숄더", count: 21, mats: [{n:"물개 가죽", r:10}, {n:"고급 연마제", r:1}, {n:"시간의 돌", r:6}, {n:"상급 아이템 결정", r:8}, {n:"흑수정", r:4}] },
+            { lv: "장인~명장", item: "강력한 환생의 불꽃", count: 31, mats: [{n:"마력 결정", r:30}, {n:"환생의 조각", r:5}, {n:"중급 주문의 정수", r:30}, {n:"꺼지지 않는 불꽃", r:5}] }
         ],
         alchemy: [
-            { lv: "1레벨~2레벨", item: "체력 회복 포션 1000", count: 3, materials: [{ name: "하급 포션 빈 병", req: 50 }, { name: "마조람 씨앗 오일", req: 3 }] },
-            { lv: "10레벨~장인", item: "마나 회복 포션 7000", count: 33, materials: [{ name: "최고급 포션 빈 병", req: 50 }, { name: "쥬니퍼베리 꽃 오일", req: 3 }] }
+            { lv: "1레벨~2레벨", item: "체력 회복 포션 1000", count: 3, mats: [{n:"하급 포션 빈 병", r:50}, {n:"마조람 씨앗 오일", r:3}] },
+            { lv: "2레벨~3레벨", item: "2단계 힘의 물약", count: 5, mats: [{n:"하급 포션 빈 병", r:5}, {n:"라벤더 씨앗 오일", r:2}] },
+            { lv: "3레벨~4레벨", item: "마나 회복 포션 2000", count: 9, mats: [{n:"하급 포션 빈 병", r:50}, {n:"로즈마리 꽃 오일", r:3}] },
+            { lv: "4레벨~5레벨", item: "마나 회복 포션 2500", count: 14, mats: [{n:"중급 포션 빈 병", r:50}, {n:"만다린 꽃 오일", r:3}] },
+            { lv: "5레벨~6레벨", item: "5단계 방어의 물약", count: 19, mats: [{n:"중급 포션 빈 병", r:25}, {n:"레몬밤 씨앗 오일", r:3}] },
+            { lv: "6레벨~8레벨", item: "6단계 방어의 물약", count: 59, mats: [{n:"중급 포션 빈 병", r:25}, {n:"자스민 씨앗 오일", r:3}] },
+            { lv: "8레벨~9레벨", item: "마나 회복 포션/알약 4000", count: 43, mats: [{n:"고급 포션 빈 병", r:50}, {n:"티트리 꽃 오일", r:3}, {n:"고급 포션 응고제", r:10}] },
+            { lv: "9레벨~10레벨", item: "마나 회복 포션/알약 6000", count: 49, mats: [{n:"고급 포션 빈 병", r:50}, {n:"페츌리 꽃 오일", r:3}, {n:"고급 포션 응고제", r:10}] },
+            { lv: "10레벨~장인", item: "마나 회복 포션/알약 7000", count: 66, mats: [{n:"최고급 포션 빈 병", r:50}, {n:"쥬니퍼베리 꽃 오일", r:3}, {n:"최고급 포션 응고제", r:10}] },
+            { lv: "장인~명장", item: "경축비/재획비 등", count: 0, mats: [{n:"상세 정보는 하단 비약 탭 참조", r:0}] }
         ]
     };
 
     function showRoute(type) {
         const data = routes[type];
-        let html = `<table><thead><tr>
-            <th>레벨 구간</th><th>제작 아이템</th><th>구간제작 횟수</th><th>재료 이름</th><th>필요 개수</th><th>재료 개당금액</th><th>제작 총 비용</th>
+        const world = document.getElementById('world-select').value;
+
+        let html = `<h2>[${world} 월드] ${type === 'equipment' ? '장비제작' : type === 'accessory' ? '장신구제작' : '연금술'} 명장 루트</h2>`;
+        html += `<table><thead><tr>
+            <th width="12%">레벨 구간</th><th width="18%">제작 아이템</th><th width="10%">구간제작 횟수</th>
+            <th width="15%">재료 이름</th><th width="10%">재료 필요개수</th><th width="15%">재료 개당금액</th><th width="20%">제작 총 비용</th>
         </tr></thead><tbody>`;
 
         data.forEach(route => {
-            const rowSpan = route.materials.length;
-            route.materials.forEach((mat, index) => {
+            const rowSpan = route.mats.length;
+            route.mats.forEach((mat, i) => {
                 html += `<tr>`;
-                if (index === 0) {
+                if (i === 0) {
                     html += `<td rowspan="${rowSpan}" class="row-span">${route.lv}</td>`;
                     html += `<td rowspan="${rowSpan}" class="row-span">${route.item}</td>`;
-                    html += `<td rowspan="${rowSpan}" class="row-span">${route.count}회</td>`;
+                    html += `<td rowspan="${rowSpan}" class="row-span">${route.count > 0 ? route.count+'회' : '-'}</td>`;
                 }
-                html += `<td>${mat.name}</td>`;
-                html += `<td>${mat.req * route.count}개</td>`;
-                html += `<td class="price-text" id="price-${mat.name}">로드 중...</td>`;
-                if (index === 0) {
-                    html += `<td rowspan="${rowSpan}" class="price-text" id="total-${route.item}">계산 중...</td>`;
+                html += `<td>${mat.n}</td>`;
+                html += `<td>${mat.r > 0 ? (mat.r * (route.count || 1)) + '개' : '-'}</td>`;
+                html += `<td class="price-text">실시간 조회중</td>`;
+                if (i === 0) {
+                    html += `<td rowspan="${rowSpan}" class="total-price">자동 계산 대기</td>`;
                 }
                 html += `</tr>`;
             });
         });
 
         html += `</tbody></table>`;
-        document.getElementById('display-area').innerHTML = html;
+        if(type === 'alchemy') html += `<p style="margin-top:20px; color:#666;">* 장인~명장 구간은 경축비, 재획비 등 본인 필요 비약 제작을 권장합니다.</p>`;
         
-        // 여기에 나중에 fetchMarketData(world, materials) 함수를 호출하여 실제 가격을 채움
-    }
-
-    // 실제 가격 계산 시뮬레이션 함수 (요청하신 합산 로직 포함)
-    function calculateActualCost(neededCount, marketList) {
-        let total = 0;
-        let collected = 0;
-        // marketList 예: [{price: 120000, stock: 1}, {price: 130000, stock: 10}]
-        for (let item of marketList) {
-            let buy = Math.min(neededCount - collected, item.stock);
-            total += buy * item.price;
-            collected += buy;
-            if (collected >= neededCount) break;
-        }
-        return total;
+        document.getElementById('display-area').innerHTML = html;
     }
 </script>
 

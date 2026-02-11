@@ -5,162 +5,133 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>메이플 아이템메이커</title>
     <style>
-        /* 1. 화이트 모드 기본값 */
-        body {
-            font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-            background-color: #ffffff;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            text-align: center;
-        }
-
-        /* 3. 상단 이름 설정 */
-        header h1 {
-            color: #f39c12;
-            font-size: 2.5rem;
-            margin-bottom: 30px;
-        }
-
-        /* 4. 서버 선택 및 검색창 */
-        .search-box {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 40px;
-        }
-
-        select, input {
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 15px;
-        }
-
+        body { font-family: 'Apple SD Gothic Neo', sans-serif; background: #fff; color: #333; margin: 0; text-align: center; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
+        h1 { color: #f39c12; font-size: 2.5rem; margin-bottom: 30px; }
+        
+        /* 검색창 영역 */
+        .search-area { display: flex; justify-content: center; gap: 10px; margin-bottom: 40px; }
+        select, input { padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; }
         input { width: 350px; }
+        .btn-search { background: #f39c12; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; }
 
-        .btn-search {
-            background-color: #f39c12;
-            color: white;
-            border: none;
-            cursor: pointer;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-weight: bold;
-        }
+        /* 카테고리 영역 */
+        .category-group { margin-bottom: 30px; }
+        .label { display: block; font-size: 14px; color: #888; margin-bottom: 10px; font-weight: bold; }
+        .btn-group { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+        .btn-nav { background: #fff; border: 1px solid #ddd; padding: 8px 18px; border-radius: 20px; cursor: pointer; font-size: 14px; transition: 0.2s; }
+        .btn-nav:hover, .btn-nav.active { border-color: #f39c12; color: #f39c12; background: #fff9f0; }
 
-        /* 5 & 6. 카테고리 레이아웃 */
-        .category-section {
-            margin-top: 30px;
-            border-top: 1px solid #eee;
-            padding-top: 20px;
-        }
-
-        .category-group {
-            margin-bottom: 30px;
-        }
-
-        .category-label {
-            display: block;
-            font-size: 14px;
-            color: #888;
-            margin-bottom: 12px;
-            font-weight: bold;
-        }
-
-        .btn-group {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .btn-nav {
-            background: #fff;
-            border: 1px solid #ddd;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: 0.2s;
-        }
-
-        .btn-nav:hover {
-            border-color: #f39c12;
-            color: #f39c12;
-            background-color: #fff9f0;
-        }
-
-        /* 결과 창 */
-        #display-area {
-            margin-top: 40px;
-            padding: 30px;
-            background-color: #f9f9f9;
-            border-radius: 12px;
-            color: #999;
-        }
+        /* 테이블 디자인 */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; }
+        th { background: #f8f9fa; border-top: 2px solid #333; border-bottom: 1px solid #ddd; padding: 12px; }
+        td { border-bottom: 1px solid #eee; padding: 10px; vertical-align: middle; }
+        .row-span { background: #fff; font-weight: bold; }
+        .price-text { color: #e67e22; font-weight: bold; }
+        #display-area { margin-top: 40px; min-height: 200px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <header>
-        <h1>🍁 메이플 아이템메이커</h1>
-    </header>
+    <header><h1>🍁 메이플 아이템메이커</h1></header>
 
-    <div class="search-box">
-        <select id="server-select">
-            <option>스카니아</option><option>루나</option><option>엘리시움</option>
-            <option>크로아</option><option>오로라</option><option>베라</option>
-            <option>레드</option><option>이노시스</option><option>유니온</option>
-            <option>아케인</option><option>노바</option><option>리부트</option>
+    <div class="search-area">
+        <select id="world-select">
+            <option value="스카니아">스카니아</option><option value="루나">루나</option>
+            <option value="엘리시움">엘리시움</option><option value="크로아">크로아</option>
         </select>
         <input type="text" id="item-input" placeholder="아이템명은 풀 네임으로 작성바랍니다.">
-        <button class="btn-search" onclick="doSearch()">검색</button>
+        <button class="btn-search">검색</button>
     </div>
 
     <div class="category-section">
         <div class="category-group">
-            <span class="category-label">명장루트 설정</span>
+            <span class="label">명장루트 설정</span>
             <div class="btn-group">
-                <button class="btn-nav">장비제작 명장루트</button>
-                <button class="btn-nav">장신구제작 명장루트</button>
-                <button class="btn-nav">연금술 명장루트</button>
+                <button class="btn-nav" onclick="showRoute('equipment')">장비제작 명장루트</button>
+                <button class="btn-nav" onclick="showRoute('accessory')">장신구제작 명장루트</button>
+                <button class="btn-nav" onclick="showRoute('alchemy')">연금술 명장루트</button>
             </div>
         </div>
-
         <div class="category-group">
-            <span class="category-label">전문기술 카테고리</span>
+            <span class="label">전문기술 카테고리</span>
             <div class="btn-group">
-                <button class="btn-nav">채집</button>
-                <button class="btn-nav">광물</button>
-                <button class="btn-nav">장비제작</button>
-                <button class="btn-nav">장신구제작</button>
+                <button class="btn-nav">채집</button><button class="btn-nav">광물</button>
+                <button class="btn-nav">장비제작</button><button class="btn-nav">장신구제작</button>
                 <button class="btn-nav">연금술</button>
             </div>
         </div>
     </div>
 
-    <div id="display-area">
-        아이템을 검색하거나 카테고리를 선택하세요.
-    </div>
+    <div id="display-area">버튼을 클릭하여 명장 루트 정보를 확인하세요.</div>
 </div>
 
 <script>
-    function doSearch() {
-        const server = document.getElementById('server-select').value;
-        const item = document.getElementById('item-input').value;
-        if(!item) return alert("아이템명을 입력해주세요.");
+    // 명장 루트 데이터 객체 (전달받은 이미지 내용 기반)
+    const routes = {
+        equipment: [
+            { lv: "1레벨~3레벨", item: "40제 활/석궁 화살", count: 12, materials: [{ name: "은괴", req: 12 }, { name: "오팔", req: 12 }] },
+            { lv: "3레벨~7레벨", item: "70제 활/석궁 화살", count: 37, materials: [{ name: "청동", req: 37 }, { name: "아다만티움", req: 37 }] },
+            { lv: "7레벨~10레벨", item: "100제 활/석궁 화살", count: 77, materials: [{ name: "아쿠아마린", req: 77 }, { name: "다이아몬드", req: 77 }] },
+            { lv: "10레벨~장인", item: "120제 타임리스 카바타나", count: 33, materials: [{ name: "흑수정", req: 2 }, { name: "고급 연마제", req: 1 }, { name: "시간의 돌", req: 1 }, { name: "상급 아이템 결정", req: 2 }] },
+            { lv: "장인~명장", item: "마법의 숫돌", count: 31, materials: [{ name: "최상급 아이템 결정", req: 10 }, { name: "뒤틀린 시간의 정수", req: 10 }, { name: "상급 주문의 정수", req: 10 }] }
+        ],
+        accessory: [
+            { lv: "1레벨~6레벨", item: "50제 반지", count: 34, materials: [{ name: "오리할콘", req: 1 }, { name: "하급 연마제", req: 1 }] },
+            { lv: "6레벨~10레벨", item: "90제 반지", count: 95, materials: [{ name: "금괴", req: 1 }, { name: "중급 연마제", req: 1 }] },
+            { lv: "10레벨~장인", item: "120제 지혜의 로얄 숄더", count: 21, materials: [{ name: "물개 가죽", req: 10 }, { name: "고급 연마제", req: 1 }, { name: "시간의 돌", req: 6 }, { name: "상급 아이템 결정", req: 8 }] },
+            { lv: "장인~명장", item: "강력한 환생의 불꽃", count: 31, materials: [{ name: "마력 결정", req: 30 }, { name: "환생의 조각", req: 5 }, { name: "중급 주문의 정수", req: 30 }, { name: "꺼지지 않는 불꽃", req: 5 }] }
+        ],
+        alchemy: [
+            { lv: "1레벨~2레벨", item: "체력 회복 포션 1000", count: 3, materials: [{ name: "하급 포션 빈 병", req: 50 }, { name: "마조람 씨앗 오일", req: 3 }] },
+            { lv: "10레벨~장인", item: "마나 회복 포션 7000", count: 33, materials: [{ name: "최고급 포션 빈 병", req: 50 }, { name: "쥬니퍼베리 꽃 오일", req: 3 }] }
+        ]
+    };
+
+    function showRoute(type) {
+        const data = routes[type];
+        let html = `<table><thead><tr>
+            <th>레벨 구간</th><th>제작 아이템</th><th>구간제작 횟수</th><th>재료 이름</th><th>필요 개수</th><th>재료 개당금액</th><th>제작 총 비용</th>
+        </tr></thead><tbody>`;
+
+        data.forEach(route => {
+            const rowSpan = route.materials.length;
+            route.materials.forEach((mat, index) => {
+                html += `<tr>`;
+                if (index === 0) {
+                    html += `<td rowspan="${rowSpan}" class="row-span">${route.lv}</td>`;
+                    html += `<td rowspan="${rowSpan}" class="row-span">${route.item}</td>`;
+                    html += `<td rowspan="${rowSpan}" class="row-span">${route.count}회</td>`;
+                }
+                html += `<td>${mat.name}</td>`;
+                html += `<td>${mat.req * route.count}개</td>`;
+                html += `<td class="price-text" id="price-${mat.name}">로드 중...</td>`;
+                if (index === 0) {
+                    html += `<td rowspan="${rowSpan}" class="price-text" id="total-${route.item}">계산 중...</td>`;
+                }
+                html += `</tr>`;
+            });
+        });
+
+        html += `</tbody></table>`;
+        document.getElementById('display-area').innerHTML = html;
         
-        document.getElementById('display-area').innerHTML = 
-            `<strong>${server}</strong> 서버에서 <strong>${item}</strong>의 최저가를 검색합니다...`;
+        // 여기에 나중에 fetchMarketData(world, materials) 함수를 호출하여 실제 가격을 채움
+    }
+
+    // 실제 가격 계산 시뮬레이션 함수 (요청하신 합산 로직 포함)
+    function calculateActualCost(neededCount, marketList) {
+        let total = 0;
+        let collected = 0;
+        // marketList 예: [{price: 120000, stock: 1}, {price: 130000, stock: 10}]
+        for (let item of marketList) {
+            let buy = Math.min(neededCount - collected, item.stock);
+            total += buy * item.price;
+            collected += buy;
+            if (collected >= neededCount) break;
+        }
+        return total;
     }
 </script>
 

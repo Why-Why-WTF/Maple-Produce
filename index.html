@@ -2,21 +2,35 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>메이플 프로듀스 - 제작 계산기</title>
+    <title>메이플 프로듀스 - 실시간 경매장</title>
     <style>
-        body { font-family: 'Arial', sans-serif; background: #f4f4f4; text-align: center; padding: 50px; }
-        .container { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); display: inline-block; }
-        h1 { color: #ff9800; }
-        input { padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
-        button { padding: 10px 20px; background: #ff9800; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        /* 아까보다 조금 더 메이플 느낌나게 수정 */
+        body { font-family: 'Malgun Gothic', sans-serif; background: #222; color: #fff; text-align: center; }
+        .box { background: #333; padding: 30px; border-radius: 15px; display: inline-block; margin-top: 50px; border: 2px solid #ff9800; }
+        input { padding: 10px; border-radius: 5px; border: none; width: 200px; }
+        button { padding: 10px 20px; background: #ff9800; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        #result { margin-top: 20px; font-size: 1.2em; color: #ffeb3b; }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="box">
         <h1>🍁 메이플 프로듀스</h1>
-        <p>아이템 이름을 입력하면 경매장 가격을 가져올 준비를 합니다.</p>
-        <input type="text" placeholder="아이템 이름 입력">
-        <button onclick="alert('아직 API 연동 전입니다!')">가격 조회</button>
+        <p>경매장 최저가를 조회합니다.</p>
+        <input type="text" id="itemName" placeholder="아이템명 (예: 경험 축적의 비약)">
+        <button onclick="getPrice()">조회하기</button>
+        <div id="result">검색 결과가 여기에 표시됩니다.</div>
     </div>
+
+    <script>
+        async function getPrice() {
+            const name = document.getElementById('itemName').value;
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerText = name + " 가격을 불러오는 중...";
+
+            // 주의: 실제 API 호출은 보안상 Vercel Serverless Function을 통해야 합니다.
+            // 일단은 구조만 만들어두고, 다음 단계에서 서버 함수를 만들 예정입니다.
+            alert("이제 Vercel 서버 함수를 연결할 차례입니다!");
+        }
+    </script>
 </body>
 </html>

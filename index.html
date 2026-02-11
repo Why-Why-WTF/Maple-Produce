@@ -5,85 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>메이플 아이템메이커</title>
     <style>
-        /* 1. 화이트 모드 기본 설정 */
-        body { 
-            font-family: 'Malgun Gothic', sans-serif; 
-            background-color: #ffffff; 
-            color: #333; 
-            margin: 0; 
-            padding: 0; 
+        /* 1. 화이트 모드 기본값 */
+        body {
+            font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+            background-color: #ffffff;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
         }
 
-        /* 헤더 설정 */
-        header { 
-            padding: 40px 20px; 
-            text-align: center; 
-            border-bottom: 1px solid #f0f0f0; 
-        }
-        
-        /* 3. 상단 이름 변경 */
-        h1 { 
-            color: #f39c12; 
-            margin: 0; 
-            font-size: 2.2em;
-            letter-spacing: -1px;
-        }
-
-        .container { 
-            max-width: 900px; 
-            margin: 0 auto; 
-            padding: 40px 20px; 
-        }
-
-        /* 4. 서버 선택 및 검색창 (2. 안내문구 포함) */
-        .search-container { 
-            display: flex; 
-            justify-content: center; 
-            gap: 10px; 
-            margin-bottom: 50px; 
-        }
-
-        select { 
-            padding: 15px; 
-            border: 2px solid #eee; 
-            border-radius: 10px; 
-            font-size: 16px; 
-            background-color: #fff;
-            outline: none;
-        }
-
-        input[type="text"] { 
-            width: 450px; 
-            padding: 15px; 
-            border: 2px solid #eee; 
-            border-radius: 10px; 
-            font-size: 16px;
-            outline: none;
-        }
-
-        input[type="text"]:focus { border-color: #f39c12; }
-
-        .search-btn { 
-            padding: 15px 30px; 
-            background-color: #f39c12; 
-            color: white; 
-            border: none; 
-            border-radius: 10px; 
-            font-weight: bold; 
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .search-btn:hover { background-color: #d35400; }
-
-        /* 5 & 6. 카테고리 영역 */
-        .nav-section {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
             text-align: center;
         }
 
-        .nav-group {
+        /* 3. 상단 이름 설정 */
+        header h1 {
+            color: #f39c12;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+        }
+
+        /* 4. 서버 선택 및 검색창 */
+        .search-box {
             display: flex;
-            flex-direction: column
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        select, input {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        input { width: 350px; }
+
+        .btn-search {
+            background-color: #f39c12;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        /* 5 & 6. 카테고리 레이아웃 */
+        .category-section {
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        .category-group {
+            margin-bottom: 30px;
+        }
+
+        .category-label {
+            display: block;
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-nav {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .btn-nav:hover {
+            border-color: #f39c12;
+            color: #f39c
